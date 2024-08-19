@@ -1,5 +1,5 @@
 {
-  "name": "vite-ts-vue-crx",
+  "name": "vite-ts-vue-crx-newtab",
   "private": true,
   "version": "0.1.0",
   "type": "module",
@@ -32,6 +32,7 @@
     "marked": "^5.0.4",
     "mockjs": "^1.1.0",
     "mockjs-fetch": "^2.0.0",
+    "moment": "^2.30.1",
     "pinia": "^2.1.7",
     "vue": "^3.3.4",
     "vue-router": "^4.2.4"

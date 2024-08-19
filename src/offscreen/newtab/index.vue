@@ -1,6 +1,12 @@
 <template>
-  <div class="camera-container">newtab</div>
+  <RouterView />
 </template>
 
 <script setup lang="ts"></script>
-<style lang="scss"></style>
+<style lang="scss">
+#app {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+</style>
