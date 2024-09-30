@@ -20,14 +20,39 @@
     </div>
     <div class="content-wrapper">
       <div v-if="curMode === ModeType.Focus" class="content-inner">
-        <div class="time-box">{{ curTime }}</div>
+        <!-- <div class="time-box">{{ curTime }}</div> -->
       </div>
       <div v-if="curMode === ModeType.Normal" class="normal-content">
         <div class="card-item daily-task-box">
-          <div class="card-header">每日必看</div>
-          <div>
-            <div v-for="item in dailyTaskList" :key="item.id">
-              <div>{{ item.label }}</div>
+          <div class="card-header">
+            <div class="left-text">
+              <div class="title">每日任务</div>
+              <div class="subtitle">{{ curDate }}</div>
+            </div>
+            <div class="right-btns">
+              <el-icon v-if="showTaskAddInput" class="add-btn" @click="startAddTask(false)"><CircleCloseFilled /></el-icon>
+              <el-icon v-else class="add-btn" @click="startAddTask(true)">
+                <CirclePlusFilled />
+              </el-icon>
+              <el-icon class="more-btn"><ArrowRight /></el-icon>
+            </div>
+          </div>
+          <div v-if="showTaskAddInput" class="add-task-box">
+            <input v-model="taskInputContent" placeholder="在这里输入新的任务" class="add-task-input" @keydown.enter="addTask" />
+            <el-icon class="add-btn" @click="addTask"><Select /></el-icon>
+          </div>
+          <div class="task-list">
+            <div v-for="(item, index) in dailyTaskList" :key="item.id" class="list-item">
+              <el-checkbox v-model="item.checked" class="check-icon" size="small" @change="taskCheckChange" />
+              <div class="item-label" :class="{ checked: item.checked }">{{ item.label }}</div>
+              <el-dropdown trigger="click" placement="bottom-end">
+                <el-icon class="more-btn"><MoreFilled /></el-icon>
+                <template #dropdown>
+                  <el-dropdown-menu>
+                    <el-dropdown-item @click="deleteDailyTaskItem(index)">删除</el-dropdown-item>
+                  </el-dropdown-menu>
+                </template>
+              </el-dropdown>
             </div>
           </div>
         </div>
@@ -41,10 +66,14 @@
           <div>gird布局</div>
           <div>动画学习</div>
         </div>
-        <div class="card-item">
-          <div class="card-header">减肥指南</div>
-          <div>少吃饭</div>
-          <div>多喝水</div>
+        <div class="card-item tech-study-box">
+          <div class="card-header" @click="editTechStudyPlan">技术学习</div>
+          <div class="list-content">
+            <div v-for="item in techStudyList" :key="item.id" class="list-item">
+              <span class="item-label">{{ item.label }}</span>
+              <el-icon class="detail-btn"><ArrowRight /></el-icon>
+            </div>
+          </div>
         </div>
         <div class="card-item left-target-box">
           <div class="card-header">人生目标</div>
@@ -125,7 +154,7 @@
 <script setup lang="ts">
 import { onBeforeMount, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
-import { Setting, Edit, SuccessFilled, Flag, Delete, Select, CirclePlusFilled } from '@element-plus/icons-vue'
+import { Setting, MoreFilled, Edit, ArrowRight, SuccessFilled, Flag, Delete, Select, CirclePlusFilled, CircleCloseFilled } from '@element-plus/icons-vue'
 import moment from 'moment'
 import { StorageKey, getStorage, setStorage } from '@/common/utils/storage'
 import EmojiPicker from 'vue3-emoji-picker'
@@ -148,16 +177,43 @@ const sloganList = ref([
   '总是要成为你坐在的那个乐队的最差的乐手，如果你是乐队中最好的乐手，就需要重新选择乐队了，我认为这也适用于乐队之外的其他事情',
   '所以人类的痛苦其实就是和自己的欲望做斗争'
 ])
+const taskInputContent = ref('')
+const showTaskAddInput = ref(false)
+const startAddTask = (flag: boolean) => {
+  showTaskAddInput.value = flag
+  taskInputContent.value = ''
+}
+const taskCheckChange = () => {
+  setStorage(StorageKey.TaskList, JSON.stringify(dailyTaskList.value))
+}
+const addTask = () => {
+  if (!taskInputContent.value) {
+    return
+  }
+  dailyTaskList.value.unshift({
+    id: dailyTaskList.value.length + 1,
+    label: taskInputContent.value,
+    checked: false
+  })
+  taskInputContent.value = ''
+  setStorage(StorageKey.TaskList, JSON.stringify(dailyTaskList.value))
+}
 const dailyTaskList = ref([
   {
     id: 1,
-    label: '查看联想邮件'
+    label: '查看联想邮件',
+    checked: false
   },
   {
     id: 2,
-    label: '查看联合利泰邮件'
+    label: '查看联合利泰邮件',
+    checked: false
   }
 ])
+const deleteDailyTaskItem = (index: number) => {
+  dailyTaskList.value.splice(index, 1)
+  setStorage(StorageKey.TaskList, JSON.stringify(dailyTaskList.value))
+}
 const bgImgList = ref([BgImg1, BgImg2, BgImg3, BgImg4, BgImg5, BgImg6, BgImg7, BgImg8])
 const showPopper = ref(true)
 enum ModeType {
@@ -170,12 +226,46 @@ enum TabType {
   Slogan = 'slogan',
   BgImg = 'bg_img'
 }
+const techStudyList = ref([
+  {
+    id: 1,
+    label: '性能监控 sentry'
+  },
+  {
+    id: 2,
+    label: '性能优化打包'
+  },
+  {
+    id: 4,
+    label: '动画'
+  },
+  {
+    id: 5,
+    label: '拖拽'
+  },
+  {
+    id: 6,
+    label: 'uniapp 项目'
+  },
+  {
+    id: 7,
+    label: '架构设计'
+  },
+  {
+    id: 8,
+    label: '利用AI'
+  }
+])
+const editTechStudyPlan = () => {
+  router.push('techStudy')
+}
 const curSloganColor = ref('#fff')
 const curSloganBgColor = ref('')
 const sloganPreviewColor = ref('')
 const sloganPreviewBgColor = ref('')
 const predefineColors = ref(['#ff4500', '#ff8c00', '#ffd700', '#90ee90', '#00ced1', '#1e90ff', '#c71585', 'rgba(255, 69, 0, 0.68)', 'rgb(255, 120, 0)', 'hsv(51, 100, 98)', 'hsva(120, 40, 94, 0.5)', 'hsl(181, 100%, 37%)', 'hsla(209, 100%, 56%, 0.73)', '#c7158577'])
-const curTime = ref('')
+const curTime = ref()
+const curDate = ref(moment().format('YY-MM-DD'))
 const curMode = ref('')
 const showEditSloganPopper = ref(false)
 const sloganEditPopperEle = ref()
@@ -278,6 +368,10 @@ onBeforeMount(async () => {
   curMoodEmoji.value = (await getStorage(StorageKey.CurMoodEmoji)) || curMoodEmoji.value
   curSloganColor.value = (await getStorage(StorageKey.CurSloganColor)) || curSloganColor.value
   curSloganBgColor.value = (await getStorage(StorageKey.CurSloganBgColor)) || curSloganBgColor.value
+  const localTaskListStr = await getStorage(StorageKey.TaskList)
+  if (localTaskListStr) {
+    dailyTaskList.value = JSON.parse(localTaskListStr)
+  }
 })
 const onDocClick = (e: MouseEvent) => {
   const target = e.target as HTMLElement
@@ -315,6 +409,18 @@ onUnmounted(() => {
     .header {
       opacity: 0;
       visibility: hidden;
+    }
+    .bottom {
+      .setting-btn {
+        opacity: 0;
+        visibility: hidden;
+      }
+      &:hover {
+        .setting-btn {
+          opacity: 1;
+          visibility: visible;
+        }
+      }
     }
   }
   .header {
@@ -442,6 +548,112 @@ onUnmounted(() => {
         // grid-column: 1/3;
         // grid-row: 1/3;
         grid-area: a;
+        display: flex;
+        flex-direction: column;
+        padding: 10px 0;
+        overflow: hidden;
+        .card-header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 0 10px;
+          .left-text {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            flex-grow: 1;
+            .title {
+              font-size: 16px;
+            }
+            .subtitle {
+              margin-left: 4px;
+              font-size: 12px;
+              font-weight: normal;
+              color: rgba(0, 0, 0, 0.54);
+            }
+          }
+          .right-btns {
+            display: inline-flex;
+            align-items: center;
+            justify-content: flex-end;
+            font-size: 14px;
+            color: rgba(0, 0, 0, 0.54);
+            opacity: 0;
+            visibility: hidden;
+            .el-icon + .el-icon {
+              margin-left: 5px;
+            }
+            .el-icon {
+              cursor: pointer;
+            }
+          }
+          &:hover {
+            .right-btns {
+              opacity: 1;
+              visibility: visible;
+            }
+          }
+        }
+        .add-task-box {
+          margin: 10px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          border: 1px solid rgba(0, 0, 0, 0.12);
+          border-radius: 4px;
+          .add-task-input {
+            padding: 0 8px;
+            border: none;
+            background: transparent;
+            flex-grow: 1;
+            font-size: 12px;
+            line-height: 28px;
+            outline: none;
+            color: rgba(0, 0, 0, 0.87);
+          }
+          .add-btn {
+            margin: 0 4px;
+            font-size: 14px;
+            cursor: pointer;
+            color: rgba(0, 0, 0, 0.54);
+          }
+        }
+        .task-list {
+          overflow: auto;
+          flex-grow: 1;
+          .list-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 10px;
+            font-size: 14px;
+            line-height: 28px;
+            .check-icon {
+              margin-right: 8px;
+            }
+            .item-label {
+              flex-grow: 1;
+              &.checked {
+                text-decoration: line-through;
+                color: rgba(0, 0, 0, 0.54);
+              }
+            }
+            .more-btn {
+              cursor: pointer;
+              color: rgba(0, 0, 0, 0.54);
+              opacity: 0;
+              visibility: hidden;
+            }
+
+            &:hover {
+              background: rgba(0, 0, 0, 0.04);
+              .more-btn {
+                opacity: 1;
+                visibility: visible;
+              }
+            }
+          }
+        }
       }
       .month-target-box {
         grid-column: span 2;
@@ -451,6 +663,40 @@ onUnmounted(() => {
       }
       .left-target-box {
         grid-column: 2/4;
+      }
+      .tech-study-box {
+        padding: 10px 0;
+        overflow: hidden;
+        .card-header {
+          padding: 0 10px;
+          cursor: pointer;
+        }
+        .list-content {
+          overflow: auto;
+          .list-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 10px;
+            font-size: 14px;
+            line-height: 28px;
+            cursor: pointer;
+            .item-label {
+              flex-grow: 1;
+            }
+            .detail-btn {
+              width: 16px;
+              color: rgba(0, 0, 0, 0.54);
+              opacity: 0;
+            }
+            &:hover {
+              background: rgba(0, 0, 0, 0.04);
+              .detail-btn {
+                opacity: 1;
+              }
+            }
+          }
+        }
       }
       .mood-card-box {
         display: inline-flex;

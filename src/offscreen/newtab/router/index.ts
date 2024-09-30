@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import APP from '@/offscreen/newtab/index.vue'
 import Home from '@/offscreen/newtab/views/home.vue'
 import Setting from '@/offscreen/newtab/views/setting/index.vue'
+import TechStudy from '@/offscreen/newtab/views/techStudy/index.vue'
 const routes = [
   {
     path: '/',
@@ -13,8 +14,8 @@ const routes = [
         component: Home
       },
       {
-        path: 'setting',
-        component: Setting
+        path: 'techStudy',
+        component: TechStudy
       }
     ]
   }
