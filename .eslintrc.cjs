@@ -11,6 +11,7 @@ module.exports = {
     'vue/no-template-shadow': 0,
     'vue/multi-word-component-names': 0,
     'vue/max-attributes-per-line': 'off',
-    'vue/html-self-closing': 'off'
+    'vue/html-self-closing': 'off',
+    'vue/singleline-html-element-content-newline': 'off'
   }
 }
