@@ -3,6 +3,8 @@ import APP from '@/offscreen/newtab/index.vue'
 import Home from '@/offscreen/newtab/views/home.vue'
 import Setting from '@/offscreen/newtab/views/setting/index.vue'
 import TechStudy from '@/offscreen/newtab/views/techStudy/index.vue'
+import TechAnimateDetail from '@/offscreen/newtab/views/techDetail/animate.vue'
+import TechDragDetail from '@/offscreen/newtab/views/techDetail/drag.vue'
 const routes = [
   {
     path: '/',
@@ -10,12 +12,26 @@ const routes = [
     redirect: 'home',
     children: [
       {
-        path: 'home',
+        name: 'home',
+        path: '/home',
         component: Home
       },
       {
-        path: 'techStudy',
-        component: TechStudy
+        path: '/techStudy',
+        name: 'techStudy',
+        component: TechStudy,
+        children: [
+          {
+            name: 'techAnimateDetail',
+            path: '/techAnimateDetail',
+            component: TechAnimateDetail
+          },
+          {
+            name: 'techDragDetail',
+            path: '/techDragDetail',
+            component: TechDragDetail
+          }
+        ]
       }
     ]
   }

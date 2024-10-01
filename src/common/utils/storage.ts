@@ -6,7 +6,8 @@ export const StorageKey = {
   CurSloganColor: 'cur_slogan_color',
   CurSloganBgColor: 'cur_slogan_bg_color',
   CurMoodEmoji: 'cur_mood_emoji',
-  TaskList: 'task_list'
+  TaskList: 'task_list',
+  TechStudyList: 'tech_study_list'
 }
 
 export const isChrome = () => {

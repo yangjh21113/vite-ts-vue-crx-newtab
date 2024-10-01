@@ -69,7 +69,7 @@
         <div class="card-item tech-study-box">
           <div class="card-header" @click="editTechStudyPlan">技术学习</div>
           <div class="list-content">
-            <div v-for="item in techStudyList" :key="item.id" class="list-item">
+            <div v-for="item in techStudyList" :key="item.id" class="list-item" @click="toTargetTechStudyPage(item.name)">
               <span class="item-label">{{ item.label }}</span>
               <el-icon class="detail-btn"><ArrowRight /></el-icon>
             </div>
@@ -226,38 +226,16 @@ enum TabType {
   Slogan = 'slogan',
   BgImg = 'bg_img'
 }
-const techStudyList = ref([
-  {
-    id: 1,
-    label: '性能监控 sentry'
-  },
-  {
-    id: 2,
-    label: '性能优化打包'
-  },
-  {
-    id: 4,
-    label: '动画'
-  },
-  {
-    id: 5,
-    label: '拖拽'
-  },
-  {
-    id: 6,
-    label: 'uniapp 项目'
-  },
-  {
-    id: 7,
-    label: '架构设计'
-  },
-  {
-    id: 8,
-    label: '利用AI'
-  }
-])
+const techStudyList = ref()
 const editTechStudyPlan = () => {
-  router.push('techStudy')
+  router.push({
+    name: 'techStudy'
+  })
+}
+const toTargetTechStudyPage = (name: string) => {
+  router.push({
+    name: name
+  })
 }
 const curSloganColor = ref('#fff')
 const curSloganBgColor = ref('')
@@ -266,7 +244,7 @@ const sloganPreviewBgColor = ref('')
 const predefineColors = ref(['#ff4500', '#ff8c00', '#ffd700', '#90ee90', '#00ced1', '#1e90ff', '#c71585', 'rgba(255, 69, 0, 0.68)', 'rgb(255, 120, 0)', 'hsv(51, 100, 98)', 'hsva(120, 40, 94, 0.5)', 'hsl(181, 100%, 37%)', 'hsla(209, 100%, 56%, 0.73)', '#c7158577'])
 const curTime = ref()
 const curDate = ref(moment().format('YY-MM-DD'))
-const curMode = ref('')
+const curMode = ref(ModeType.Focus)
 const showEditSloganPopper = ref(false)
 const sloganEditPopperEle = ref()
 const isSloganColorEditing = ref(false)
@@ -358,7 +336,13 @@ const onModeChange = (v: string) => {
   setStorage(StorageKey.Mode, v)
 }
 onBeforeMount(async () => {
-  curMode.value = await getStorage(StorageKey.Mode)
+  // setStorage(StorageKey.TechStudyList, JSON.stringify(techStudyList.value))
+
+  const localTechStudyListStr = await getStorage(StorageKey.TechStudyList)
+  if (localTechStudyListStr) {
+    techStudyList.value = JSON.parse(localTechStudyListStr)
+  }
+  curMode.value = (await getStorage(StorageKey.Mode)) as ModeType
   const localSloganListStr = await getStorage(StorageKey.SloganList)
   if (localSloganListStr) {
     sloganList.value = JSON.parse(localSloganListStr)
