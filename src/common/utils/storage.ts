@@ -7,7 +7,9 @@ export const StorageKey = {
   CurSloganBgColor: 'cur_slogan_bg_color',
   CurMoodEmoji: 'cur_mood_emoji',
   TaskList: 'task_list',
-  TechStudyList: 'tech_study_list'
+  TechStudyList: 'tech_study_list',
+  CountDownList: 'count_down_list',
+  CurCountDown: 'cur_count_down'
 }
 
 export const isChrome = () => {
@@ -19,17 +21,15 @@ export const isChrome = () => {
 
 export const setStorage = async (key: string, value: string) => {
   if (isChrome()) {
-    await chrome.storage.local.set({ key: value })
-    console.log('存储成功', key, value)
+    await chrome.storage.local.set({ [key]: value })
     return
   }
   localStorage.setItem(key, value)
 }
 
-export const getStorage = async (key: string): string => {
+export const getStorage = async (key: string): Promise<string> => {
   if (isChrome()) {
-    const res = await chrome.storage.local.get([`${key}`])
-    console.log('获取成功', key)
+    const res = await chrome.storage.local.get(key)
     return res[key] as string
   }
   return localStorage.getItem(key) as string

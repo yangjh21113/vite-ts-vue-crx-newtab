@@ -36,7 +36,7 @@
         <RouterView />
       </div>
     </div>
-    <el-dialog v-model="dialogVisible" title="任务管理" width="500px" class="edit-task-dialog">
+    <el-dialog v-model="dialogVisible" title="任务管理" width="500px" class="common-dialog edit-task-dialog">
       <div class="edit-dialog-content">
         <div class="add-box">
           <input v-model="addTaskContent" placeholder="在这里输入新的内容" class="input-box" @keydown.enter="addTask" />
@@ -401,32 +401,8 @@ onUnmounted(() => {})
   }
 }
 </style>
-<style lang="scss">
+<style lang="scss" scoped>
 .edit-task-dialog {
-  border-radius: 10px;
-
-  .el-dialog__header {
-    padding: 10px 24px;
-
-    .el-dialog__title {
-      font-size: 16px;
-    }
-  }
-
-  .el-dialog__headerbtn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 24px;
-    height: 24px;
-    right: 10px;
-    top: 10px;
-  }
-
-  .el-dialog__body {
-    padding: 0;
-  }
-
   .edit-dialog-content {
     display: flex;
     flex-direction: column;

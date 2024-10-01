@@ -61,11 +61,8 @@
           <div>减肥10斤</div>
           <div>写博客</div>
         </div>
-        <div class="card-item study-tech-box">
-          <div class="card-header">技术学习</div>
-          <div>gird布局</div>
-          <div>动画学习</div>
-        </div>
+        <CountDownCard class="card-item progress-card-box" />
+
         <div class="card-item tech-study-box">
           <div class="card-header" @click="editTechStudyPlan">技术学习</div>
           <div class="list-content">
@@ -154,11 +151,12 @@
 <script setup lang="ts">
 import { onBeforeMount, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
-import { Setting, MoreFilled, Edit, ArrowRight, SuccessFilled, Flag, Delete, Select, CirclePlusFilled, CircleCloseFilled } from '@element-plus/icons-vue'
-import moment from 'moment'
+import { Setting, MoreFilled, Edit, Switch, ArrowRight, SuccessFilled, Flag, Delete, Select, CirclePlusFilled, CircleCloseFilled } from '@element-plus/icons-vue'
+import moment, { duration } from 'moment'
 import { StorageKey, getStorage, setStorage } from '@/common/utils/storage'
 import EmojiPicker from 'vue3-emoji-picker'
 import 'vue3-emoji-picker/css'
+import CountDownCard from '@/offscreen/newtab/components/CountDownCard.vue'
 import BgImg1 from '@/common/assets/images/bg-img-1.jpg'
 import BgImg2 from '@/common/assets/images/bg-img-2.jpg'
 import BgImg3 from '@/common/assets/images/bg-img-3.jpg'
@@ -198,6 +196,7 @@ const addTask = () => {
   taskInputContent.value = ''
   setStorage(StorageKey.TaskList, JSON.stringify(dailyTaskList.value))
 }
+
 const dailyTaskList = ref([
   {
     id: 1,
@@ -263,6 +262,7 @@ const sloganEditBgColor = () => {
     sloganEditPopperEle.value.hide()
   }
 }
+
 const curSlogan = ref('你在寻找的奇迹就隐藏在你一直逃避的行动里')
 const router = useRouter()
 const curTab = ref(TabType.Mode)
@@ -342,7 +342,7 @@ onBeforeMount(async () => {
   if (localTechStudyListStr) {
     techStudyList.value = JSON.parse(localTechStudyListStr)
   }
-  curMode.value = (await getStorage(StorageKey.Mode)) as ModeType
+  curMode.value = ((await getStorage(StorageKey.Mode)) as ModeType) || curMode.value
   const localSloganListStr = await getStorage(StorageKey.SloganList)
   if (localSloganListStr) {
     sloganList.value = JSON.parse(localSloganListStr)
@@ -642,8 +642,9 @@ onUnmounted(() => {
       .month-target-box {
         grid-column: span 2;
       }
-      .study-tech-box {
+      .progress-card-box {
         grid-column: 3/5;
+        padding: 10px;
       }
       .left-target-box {
         grid-column: 2/4;
