@@ -9,7 +9,9 @@ export const StorageKey = {
   TaskList: 'task_list',
   TechStudyList: 'tech_study_list',
   CountDownList: 'count_down_list',
-  CurCountDown: 'cur_count_down'
+  CurCountDown: 'cur_count_down',
+  SelfControlPlanList: 'self_control_plan_list',
+  CurSelfControlPlan: 'cur_self_control_plan'
 }
 
 export const isChrome = () => {

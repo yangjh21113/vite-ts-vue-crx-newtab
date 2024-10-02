@@ -72,11 +72,7 @@
             </div>
           </div>
         </div>
-        <div class="card-item left-target-box">
-          <div class="card-header">人生目标</div>
-          <div>少吃饭</div>
-          <div>多喝水</div>
-        </div>
+        <SelfControlCard class="card-item self-control-box" />
         <div class="card-item mood-card-box">
           <div class="emoji-icon">{{ curMoodEmoji }}</div>
           <el-icon ref="emojiEditBtnEle" class="edit-btn" @click="editEmojiIcon"><Edit /></el-icon>
@@ -156,6 +152,7 @@ import moment, { duration } from 'moment'
 import { StorageKey, getStorage, setStorage } from '@/common/utils/storage'
 import EmojiPicker from 'vue3-emoji-picker'
 import 'vue3-emoji-picker/css'
+import SelfControlCard from '../components/SelfControlCard.vue'
 import CountDownCard from '@/offscreen/newtab/components/CountDownCard.vue'
 import BgImg1 from '@/common/assets/images/bg-img-1.jpg'
 import BgImg2 from '@/common/assets/images/bg-img-2.jpg'
@@ -283,7 +280,6 @@ const colorActiveChange = (color: string) => {
   setStorage(StorageKey.CurSloganColor, color)
 }
 const bgColorActiveChange = (color: string) => {
-  console.log(color)
   sloganPreviewBgColor.value = color
   sloganPreviewColor.value = ''
   setStorage(StorageKey.CurSloganBgColor, color)
@@ -646,8 +642,9 @@ onUnmounted(() => {
         grid-column: 3/5;
         padding: 10px;
       }
-      .left-target-box {
+      .self-control-box {
         grid-column: 2/4;
+        padding: 0 0 10px 0;
       }
       .tech-study-box {
         padding: 10px 0;

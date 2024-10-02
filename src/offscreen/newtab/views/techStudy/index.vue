@@ -72,7 +72,6 @@ import { cloneDeep } from 'lodash'
 const router = useRouter()
 const route = useRoute()
 const toDetail = (name: string) => {
-  console.log('name', `${route.path}/${name}`)
   router.push({
     name: `${name}`
   })
@@ -189,7 +188,6 @@ onMounted(async () => {
   setStorage(StorageKey.TechStudyList, JSON.stringify(techStudyList.value))
 
   curSlogan.value = (await getStorage(StorageKey.CurSlogan)) || curSlogan.value
-  console.log(1111, curSlogan)
   coundDownFn()
   setTimeout(() => {
     showWelcome.value = false

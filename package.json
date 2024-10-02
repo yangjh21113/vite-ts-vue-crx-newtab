@@ -24,6 +24,7 @@
     "animate.css": "^4.1.1",
     "axios": "^1.7.2",
     "css-doodle": "^0.40.5",
+    "echarts": "^5.5.1",
     "element-plus": "^2.3.9",
     "eslint-config-standard": "^17.1.0",
     "eslint-plugin-import": "^2.25.2",

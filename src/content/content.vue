@@ -8,7 +8,6 @@ import { ref } from 'vue'
 
 <style scoped lang="scss">
 .content-box {
-  border: 1px solid red;
   width: 100px;
   height: 100px;
   display: inline-flex;

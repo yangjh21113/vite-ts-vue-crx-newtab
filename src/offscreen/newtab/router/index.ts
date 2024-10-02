@@ -5,6 +5,7 @@ import Setting from '@/offscreen/newtab/views/setting/index.vue'
 import TechStudy from '@/offscreen/newtab/views/techStudy/index.vue'
 import TechAnimateDetail from '@/offscreen/newtab/views/techDetail/animate.vue'
 import TechDragDetail from '@/offscreen/newtab/views/techDetail/drag.vue'
+import SelfControl from '@/offscreen/newtab/views/selfControl/index.vue'
 const routes = [
   {
     path: '/',
@@ -32,6 +33,11 @@ const routes = [
             component: TechDragDetail
           }
         ]
+      },
+      {
+        name: 'selfControl',
+        path: '/selfControl',
+        component: SelfControl
       }
     ]
   }
