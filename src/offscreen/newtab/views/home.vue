@@ -56,10 +56,16 @@
             </div>
           </div>
         </div>
-        <div class="card-item month-target-box">
-          <div class="card-header">本月目标</div>
-          <div>减肥10斤</div>
-          <div>写博客</div>
+        <div class="card-item commonly-used-box">
+          <a class="app-item" href="https://mp.csdn.net/mp_blog/manage/article?spm=1001.2014.3001.5448" target="_blank">
+            <img src="https://g.csdnimg.cn/static/logo/favicon32.ico" />
+          </a>
+          <a class="app-item" href="https://juejin.cn/" target="_blank">
+            <img src="https://lf-web-assets.juejin.cn/obj/juejin-web/xitu_juejin_web/6c61ae65d1c41ae8221a670fa32d05aa.svg" />
+          </a>
+          <a class="app-item" href="https://programmercarl.com/%E5%9B%9E%E6%BA%AF%E7%AE%97%E6%B3%95%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80.html#%E9%A2%98%E7%9B%AE%E5%88%86%E7%B1%BB" target="_blank">
+            <img src="https://code-thinking-1253855093.file.myqcloud.com/pics/20210614201246512.png" />
+          </a>
         </div>
         <CountDownCard class="card-item progress-card-box" />
 
@@ -635,8 +641,28 @@ onUnmounted(() => {
           }
         }
       }
-      .month-target-box {
+      .commonly-used-box {
         grid-column: span 2;
+        display: inline-flex;
+        align-items: flex-start;
+        justify-content: flex-start;
+        flex-direction: row;
+        padding: 10px;
+        .app-item {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          margin: 0 10px 10px 0;
+          width: 40px;
+          height: 40px;
+          border: 1px solid rgba(0, 0, 0, 0.12);
+          border-radius: 6px;
+          cursor: pointer;
+          overflow: hidden;
+          img {
+            width: 100%;
+          }
+        }
       }
       .progress-card-box {
         grid-column: 3/5;
